@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 from HI6ToolKit.hi6toolkit import HTTP_Request as hp
 import asyncio
 import re, time, sys
@@ -10,19 +11,24 @@ failure = list()
 
 async def head_request(host : str, port : int) :
     ssl = True if port == 443 else False
-    http = hp(host, port, "HEAD", "/", ssl)
-    http.request()
-    if http.response_header :
-        header = http.response_header
-        return header
-    else :
+    http = hp(host, port, "HEAD", None, "/", ssl)
+    try :
+        http.request()
+    except Exception as error :
+        print("\n\n" + "ERROR : " + error + "\n\n")
         return 0
+    else :
+        if http.response_header :
+            header = http.response_header
+            return header
+        else :
+            return 0
 
 async def isweak(header : bytes) :
     global pattern
     weaks = ("apache", "nginx", "litespeed", "lighttpd", "caddy")
-    if b"server" in header :
-        server = re.search(pattern, header.decode())
+    if "server" in header :
+        server = re.search(pattern, header)
         if server :
             server = server.group().strip()
             if server.lower() in weaks : return (True, server)

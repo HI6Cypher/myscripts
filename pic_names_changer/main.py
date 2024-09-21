@@ -74,7 +74,7 @@ def save_faileds(name : str) :
         s = "# this file created for specify failed files in renaming\n\n"
         mode = "w"
     with open(path, mode) as f :
-        f.write("name\n")
+        f.write(f"{name}\n")
 
 def main() -> None :
     path = "./"

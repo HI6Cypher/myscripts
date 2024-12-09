@@ -73,6 +73,7 @@ async def main() :
 if __name__ == "__main__" :
     try :
         t = time.time()
+        if len(sys.argv) <= 1 : raise Exception("enter arg")
         path = sys.argv[1]
         print(f"[+] opening file {path}", end = "  ")
         with open(path, "r") as file :
